@@ -1,99 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <style>
-        #circleheader {
-            color: brown;
-            float: right;
-            width: 500px;
-            border: 20px solid #73AD21;
-            padding: 10px;
-        }
+html, body {
+    height: 100%;
+    margin: 0;
+}
 
-        #mycanvas {
-            float: right;
-            height: 400px;
-            width: 400px;
-            border: 30px solid #73AD21;
+body {
+    display: flex;
+    justify-content: center;
+}
 
-        }
-        
-       
+div {
+    box-sizing: border-box;
+}
+
+.wrap {
+    display: flex;
+    width: 50%;
+    height: 60%;
+    border: 1px solid black;
+    margin: auto;
+}
+
+.inputs {
+    flex: 0 1 50%;
+    min-height: 100%;
+    max-width: 50%;
+    background: rgb(10, 20, 20);
+    padding: .5em;
+    position: relative;
+}
+form {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    margin: 10px 15%;
+}
+
+.draw{
+    flex: 0 1 50%;
+    display: flex;
+    height: 100%;
+    max-width: 50%;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    position: relative;
+}
+
+#mycanvas {
+    border : 1px solid black;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 50%;
+    width: 80%;
+}
+
+input[type=text] {
+    background-color: white;
+    border: 1px solid black;
+    width: 49%;
+    height: 20px;
+    text-align: center;
+    border-radius: 15px;
+    margin: 5px 0;
+}
+
+#volume {
+    border: 1px solid black;
+    width: 200px;
+    display: block;
+    white-space: nowrap;
+    background-color: white;
+    height: 22px;
+    width: 50%;
+    text-align: center;
+    border-radius: 15px;
+    margin: 5px 0;
+    color: blue;
+}
+
+#clear {
+    position: relative;
+    top: 80%;
+    left: 35%;
+    width: 35%;
+}
+
+#clear:hover {
+    cursor: pointer;
+}
+
+#calculate {
+    position: relative;
+    left: 13%;
+    bottom: 10px;
+}
+
+button {
+    display: inline-block;
+    padding: 0.3em 1.2em;
+    margin: 0 0.3em 0.3em 0 ;
+    border-radius: 2em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'ariel';
+    font-weight: 300;
+    color: #ffffff;
+    background-color: brown
+}
+button:hover {
+    background-color:black
+    
+}
+
     </style>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My circle</title>
 </head>
-
 <body>
-    <div id="circleheader">Drawing On Canvas!</div>
-    <h1 style="color: chocolate;">input radius value and get the volume of a sphere</h1>
-    <form>
-        <!-- inputs by the user -->
-        <label for="radius">Radius:</label><br>
-        <input type="text" id="getRadius"><br><br>
-        <label for="volume">Volume:</label><br>
-        <input type="number" id="getVolume"><br><br>
+    
+    <div class="wrap">
+        <div class="inputs">
+            <form>
+                <span>Radius</span>
+                <br>
+                <input type="text" name="radius" id="radius" placeholder="Radius">
+                <br>
+                <span>Volume</span>
+                <br>
+                <span id="volume">Volume</span>
+                <br>
+                <br>
+                <button id="calculate">Calculate!</button>
+            </form>
+        </div>
 
-        <p id="demo"></p>
-
-
-        <input type="button" id="draw" value="Calculate" onclick="drawCircle(), myFunction() ;" />
-        <input type="button" id="clear" value="CLEAR" onclick="clearArea();" />
-
-
-
-    </form>
-
-
-    <body>
-        <canvas id="mycanvas" width="400" height="400"></canvas>
-        <br>
-
-        <script>
-
-            function drawCircle() {
-                var canvas = document.getElementById("mycanvas");
-                var radius = document.getElementById("getRadius").value // extracting value from textbox
-                var radius = document.getElementById("getVolume").value // extracting value from textbox
-                var ctx = canvas.getContext("2d");
-                ctx.beginPath();
-                ctx.arc(100, 75, radius, 0, 2 * Math.PI);
-                ctx.stroke();
-
-
-            }
-
-            function clearArea() {
-                var canvas = document.getElementById("mycanvas");
-                var ctx = canvas.getContext("2d");
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
-
-
-            function myFunction() {
-                var x, text;
-
-                // Get the value of the input field 
-                x = document.getElementById("getRadius").value;
-                x = document.getElementById("getVolume").value;
-
-                // If x is Not a Number or less than one or greater than 400
-                if (isNaN(x) || x < 1 || x > 400) {
-                    text = "you entered a bigger number than the maximum number 400px!!!";
-                } else {
-                    text = "Input OK";
-                }
-                document.getElementById("demo").innerHTML = text;
-            }
+        <div class="draw">
+            <canvas id="mycanvas"></canvas>
+            <br>
+            <button id="clear">Clear</button>
+        </div>
+    </div>
 
 
 
+<script>
 
-        </script>
+let radiusInput = document.querySelector('#radius');
+let volume = document.querySelector('#volume');
+let drawBtn = document.querySelector('#calculate')
+let clearBtn = document.querySelector('#clear')
 
-    </body>
+// Circle Voulume Calc 
 
+function calcVolume(e) {
+    e.preventDefault()
+    var radius = radiusInput.value
+    if (Number.isNaN(+radius) || radius === '') {
+        alert('Please Insert A Valid Number');
+        radiusInput.value = ''
+    }
+    else {
+        volume.textContent = (4 / 3) * Math.PI * Math.pow(radius, 3);
+        draw(radius)
+    }
+    volume.style.color = 'red'
+}
+
+// Canvas 
+var canvas = document.getElementById('mycanvas');
+var ctx = canvas.getContext('2d');
+
+var x = canvas.width / 2
+var y = canvas.height / 2
+
+
+function draw(r) {
+    ctx.beginPath()
+    ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.lineWidth = 1
+    ctx.strokeStyle = 'black';
+    ctx.stroke();
+    // if circle is bigger then canvas measures
+    if ((r * 2 > canvas.height)) {
+        alert('Circle Is Out Of Border')
+    }
+}
+
+// Events
+drawBtn.addEventListener('click', calcVolume);
+
+clearBtn.onclick = function () {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear Canvas
+    radiusInput.value = ''
+    volume.textContent = 'Volume'
+    volume.style.color = 'gray'
+}
+
+// Bonus 
+let bonusR = 0
+function bonusDraw() {
+
+    ctx.beginPath()
+    ctx.arc(x, y, bonusR, 0, 2 * Math.PI);
+    ctx.lineWidth = 1
+    ctx.strokeStyle = 'blue';
+    ctx.stroke()
+    if (bonusR * 2 > canvas.height) {
+        return
+    }
+    else {
+        bonusR += 1.5
+        setTimeout(bonusDraw, 100)
+    }
+}
+
+window.onload = bonusDraw()
+
+
+
+
+</script>
+
+
+</body>
 </html>
