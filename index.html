@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        #circleheader {
+            color: brown;
+            float: right;
+            width: 500px;
+            border: 20px solid #73AD21;
+            padding: 10px;
+        }
+
+        #mycanvas {
+            float: right;
+            height: 400px;
+            width: 400px;
+            border: 30px solid #73AD21;
+
+        }
+        
+       
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="circleheader">Drawing On Canvas!</div>
+    <h1 style="color: chocolate;">input radius value and get the volume of a sphere</h1>
+    <form>
+        <!-- inputs by the user -->
+        <label for="radius">Radius:</label><br>
+        <input type="text" id="getRadius"><br><br>
+        <label for="volume">Volume:</label><br>
+        <input type="number" id="getVolume"><br><br>
+
+        <p id="demo"></p>
+
+
+        <input type="button" id="draw" value="Calculate" onclick="drawCircle(), myFunction() ;" />
+        <input type="button" id="clear" value="CLEAR" onclick="clearArea();" />
+
+
+
+    </form>
+
+
+    <body>
+        <canvas id="mycanvas" width="400" height="400"></canvas>
+        <br>
+
+        <script>
+
+            function drawCircle() {
+                var canvas = document.getElementById("mycanvas");
+                var radius = document.getElementById("getRadius").value // extracting value from textbox
+                var radius = document.getElementById("getVolume").value // extracting value from textbox
+                var ctx = canvas.getContext("2d");
+                ctx.beginPath();
+                ctx.arc(100, 75, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+
+
+            }
+
+            function clearArea() {
+                var canvas = document.getElementById("mycanvas");
+                var ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+
+            function myFunction() {
+                var x, text;
+
+                // Get the value of the input field 
+                x = document.getElementById("getRadius").value;
+                x = document.getElementById("getVolume").value;
+
+                // If x is Not a Number or less than one or greater than 400
+                if (isNaN(x) || x < 1 || x > 400) {
+                    text = "you entered a bigger number than the maximum number 400px!!!";
+                } else {
+                    text = "Input OK";
+                }
+                document.getElementById("demo").innerHTML = text;
+            }
+
+
+
+
+        </script>
+
+    </body>
+
+</html>
